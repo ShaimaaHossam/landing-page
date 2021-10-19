@@ -45,7 +45,16 @@ function getPosition(section) {
       y: rect.top + window.scrollY
     };
 }
-
+function makeActive(current) {
+    for(let i=0; i<sections.length;i++){
+        if(sections[i]==current){
+            links[i].classList.add("active")
+        }
+        else{
+            links[i].classList.remove("active")
+        }
+    }
+}
 
 /**
  * End Helper Functions
@@ -66,11 +75,32 @@ function buildNav(){
     }
 }
 // Add class 'active' to section when near top of viewport
+document.addEventListener("scroll", ()=>{
+    let current = ''
 
+    sections.forEach((section)=>{
+        const sectionTop =  section.offsetTop;
+        const sectionHeight =  section.clientHeight;
+        if(pageYOffset > sectionTop){
+            current = section
+        }
+    })
 
+    
+    makeActive(current)
+    
+})
 // Scroll to anchor ID using scrollTO event
 function goTo(i){
     var {x,y} = getPosition(sections[i])
+    for(let j = 0; j<links.length; j++){
+        if(j==i){
+            links[j].classList.add("active")
+        }
+        else{
+            links[j].classList.remove("active")
+        }
+    }
     scrollTo(x,y)
     
     //ORR
